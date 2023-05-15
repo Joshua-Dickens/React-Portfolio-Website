@@ -4,7 +4,7 @@ name: "tagged-release"
 on:
   push:
     tags:
-      - "v*"
+      - "input-wacom-*"
 
 jobs:
   tagged-release:
