@@ -4,7 +4,7 @@ name: "tagged-release"
 on:
   push:
     tags:
-      - "input-wacom-*"
+      - "v*"
 
 jobs:
   tagged-release:
@@ -21,4 +21,3 @@ jobs:
         with:
           repo_token: "${{ secrets.TOKEN }}"
           prerelease: false
-          automatic_release_tag: "${{  github.ref_name }}"
