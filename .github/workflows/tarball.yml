@@ -17,9 +17,7 @@ jobs:
         id: compress
         with:
           command: c
-          cwd: ./test
           files: |
-            ./toCompress
           outPath: test.tar.gz
           
       - name: Add Test Report to Release
