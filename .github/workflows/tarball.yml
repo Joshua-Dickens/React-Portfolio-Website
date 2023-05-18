@@ -1,7 +1,15 @@
-    
-    
-    
-    
+---
+name: "tarball-generate"
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  tarball-generate:
+    name: "tarball-generate"
+    runs-on: "ubuntu-latest"
+
     steps:
       - uses: actions/checkout@master
       - name: Compress action step
@@ -12,4 +20,11 @@
           cwd: ./test
           files: |
             ./toCompress
-          outPath: yolo.tar.gz
+          outPath: test.tar.gz
+          
+      - name: Add Test Report to Release
+        uses: irongut/EditRelease@v1.2.0
+        with:
+         token: ${{ secrets.GITHUB_TOKEN }}
+         id: ${{ github.event.release.id }}
+         files: "test.tar.gz"
