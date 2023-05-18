@@ -18,6 +18,7 @@ jobs:
         with:
           command: c
           files: |
+           ./
           outPath: test.tar.gz
           
       - name: Add Test Report to Release
