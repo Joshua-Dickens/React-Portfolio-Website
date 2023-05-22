@@ -39,7 +39,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
           body: md5:${{ steps.getmd5.outputs.md5 }}
-          is_append_body: true
+          isAppendBody: true
           
       - name: Upload Release Asset
         id: upload-release-asset 
