@@ -37,6 +37,6 @@ jobs:
         with:
           token: ${{ secrets.TOKEN }}
           id: ${{ github.event.release.id }}
-          body: v${{ steps.getversion.outputs.md5 }}
+          body: "MD5: "
           replacebody: false
           files: "test.tar.gz"
