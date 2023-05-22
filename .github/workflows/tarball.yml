@@ -31,12 +31,23 @@ jobs:
       - name: Read md5 checksum file
         id: getmd5
         run: echo "::set-output name=md5::$(cat md5.txt)"
-          
-      - name: Edit Release
-        uses: irongut/EditRelease@v1.2.0
+        
+      - name: update release
+        id: update_release
+        uses: tubone24/update_release@v1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
-          token: ${{ secrets.TOKEN }}
-          id: ${{ github.event.release.id }}
-          body: "MD5: "
-          replacebody: false
-          files: "test.tar.gz"
+          body: md5:${{ steps.getmd5.outputs.md5 }}
+          is_append_body: true
+          
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          upload_url: ${{ steps.update_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./test.tar.gz
+          asset_name: test.tar.gz
+          asset_content_type: application/zip
