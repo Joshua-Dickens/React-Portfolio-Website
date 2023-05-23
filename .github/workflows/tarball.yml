@@ -21,7 +21,7 @@ jobs:
            ./
           outPath: test.tar.gz
           
-      - name: Generate checksum
+      - name: Generate md5 checksum
         uses: jmgilman/actions-generate-checksum@v1
         with:
           method: md5
@@ -32,13 +32,38 @@ jobs:
         id: getmd5
         run: echo "::set-output name=md5::$(cat md5.txt)"
         
+      - name: Generate sha1 checksum
+        uses: jmgilman/actions-generate-checksum@v1
+        with:
+          method: sha1
+          output: sha1.txt
+          patterns: ./*.tar.gz
+          
+      - name: Read sha1 checksum file
+        id: getsha1
+        run: echo "::set-output name=sha1::$(cat md5.txt)"
+        
+      - name: Generate sha256 checksum
+        uses: jmgilman/actions-generate-checksum@v1
+        with:
+          method: sha256
+          output: sha256.txt
+          patterns: ./*.tar.gz
+          
+      - name: Read sha256 checksum file
+        id: getsha256
+        run: echo "::set-output name=sha256::$(cat md5.txt)"
+        
       - name: update release
         id: update_release
         uses: tubone24/update_release@v1.0
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
-          body: md5:${{ steps.getmd5.outputs.md5 }}
+          body: |
+            md5: ${{ steps.getmd5.outputs.md5 }}
+            sha1: ${{ steps.getsha1.outputs.sha1 }}
+            sha256: ${{ steps.getsha256.outputs.sha256 }}
           isAppendBody: true
           
       - name: Upload Release Asset
